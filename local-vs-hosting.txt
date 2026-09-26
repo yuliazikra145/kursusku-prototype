@@ -1,0 +1,70 @@
+LOCAL VS HOSTING - PERTEMUAN 5 KURSUSKU
+
+1. Lingkungan
+Local:
+Aplikasi dijalankan pada komputer sendiri menggunakan Laragon.
+
+Hosting:
+Aplikasi dijalankan pada server yang dapat diakses melalui jaringan atau internet.
+
+2. URL
+Local:
+http://localhost/kursusku-prototype/
+
+Hosting:
+Menggunakan domain atau alamat server yang diberikan oleh penyedia hosting.
+
+3. Lokasi File
+Local:
+File proyek berada pada document root Laragon, yaitu folder C:\laragon\www\kursusku-prototype.
+
+Hosting:
+File aplikasi ditempatkan pada document root atau folder aplikasi yang ditentukan oleh server hosting.
+
+4. Database
+Local:
+Database jika digunakan berjalan pada lingkungan komputer lokal.
+
+Hosting:
+Database harus tersedia dan dikonfigurasi pada server hosting.
+
+5. Konfigurasi
+Local:
+Konfigurasi digunakan untuk kebutuhan pengembangan dan pengujian.
+
+Hosting:
+Konfigurasi harus disesuaikan dengan lingkungan produksi.
+
+6. HTTPS
+Local:
+Pengujian dapat dilakukan melalui localhost.
+
+Hosting:
+Aplikasi publik sebaiknya menggunakan HTTPS agar komunikasi data lebih aman.
+
+7. Debug
+Local:
+Debug dapat lebih terbuka untuk membantu menemukan kesalahan selama pengembangan.
+
+Hosting:
+Debug sebaiknya tidak menampilkan informasi sensitif kepada pengguna.
+
+8. Secret
+Local:
+Data rahasia untuk pengembangan tidak boleh menggunakan kredensial penting.
+
+Hosting:
+Password, API key, dan secret harus disimpan dengan aman dan tidak dibagikan.
+
+9. Document Root
+Local:
+Document root adalah lokasi utama tempat server web mencari file aplikasi.
+
+Hosting:
+Document root ditentukan oleh konfigurasi server hosting.
+
+KESIMPULAN:
+Local digunakan untuk mengembangkan dan menguji aplikasi pada komputer sendiri,
+sedangkan hosting digunakan untuk menjalankan aplikasi pada server. Saat aplikasi
+dipindahkan ke hosting, konfigurasi, keamanan, HTTPS, secret, dan document root
+harus diperhatikan.
