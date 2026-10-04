@@ -1,206 +1,536 @@
 <?php
-$name = trim($_POST['name'] ?? '');
-$email = trim($_POST['email'] ?? '');
-$phone = trim($_POST['phone'] ?? '');
-$studyProgram = trim($_POST['study_program'] ?? '');
-$course = $_POST['course'] ?? '';
-$participantType = $_POST['participant_type'] ?? '';
-$interests = $_POST['interests'] ?? [];
-$note = trim($_POST['note'] ?? '');
-$source = $_POST['source'] ?? '';
 
-$interestText = implode(', ', $interests);
+$siteName = 'KursusKu';
+
+/*
+|--------------------------------------------------------------------------
+| DATA KURSUS
+|--------------------------------------------------------------------------
+*/
+
+$courses = [
+    'web-dasar' => [
+        'name' => 'Web Dasar',
+        'price' => 200000
+    ],
+
+    'php-dasar' => [
+        'name' => 'PHP Dasar',
+        'price' => 250000
+    ],
+
+    'php-lanjutan' => [
+        'name' => 'PHP Lanjutan',
+        'price' => 300000
+    ],
+
+    'laravel-fundamental' => [
+        'name' => 'Laravel Fundamental',
+        'price' => 350000
+    ],
+
+    'mysql-dasar' => [
+        'name' => 'MySQL Dasar',
+        'price' => 275000
+    ],
+
+    'ui-web-dasar' => [
+        'name' => 'UI Web Dasar',
+        'price' => 225000
+    ]
+];
+
+
+/*
+|--------------------------------------------------------------------------
+| DISKON
+|--------------------------------------------------------------------------
+*/
+
+$discounts = [
+    'mahasiswa' => 20,
+    'guru' => 15,
+    'umum' => 10
+];
+
+
+/*
+|--------------------------------------------------------------------------
+| LABEL MINAT
+|--------------------------------------------------------------------------
+*/
+
+$interestLabels = [
+    'frontend' => 'Frontend',
+    'backend' => 'Backend',
+    'database' => 'Database',
+    'ui-ux' => 'UI/UX'
+];
+
+
+/*
+|--------------------------------------------------------------------------
+| HELPER
+|--------------------------------------------------------------------------
+*/
 
 function e($value): string
 {
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars(
+        (string) $value,
+        ENT_QUOTES,
+        'UTF-8'
+    );
 }
+
+
+function rupiah($value): string
+{
+    return 'Rp ' . number_format(
+        (int) $value,
+        0,
+        ',',
+        '.'
+    );
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| AMBIL DATA FORM
+|--------------------------------------------------------------------------
+*/
+
+$name = $_POST['name'] ?? '';
+
+$email = $_POST['email'] ?? '';
+
+$phone = $_POST['phone'] ?? '';
+
+$studyProgram = $_POST['study_program'] ?? '';
+
+$course = $_POST['course'] ?? '';
+
+$participantType = $_POST['participant_type'] ?? '';
+
+$interests = $_POST['interests'] ?? [];
+
+$learningMethod = $_POST['learning_method'] ?? '';
+
+$package = (int) ($_POST['package'] ?? 1);
+
+$note = $_POST['note'] ?? '';
+
+$source = $_POST['source'] ?? '';
+
+
+/*
+|--------------------------------------------------------------------------
+| NORMALISASI DATA
+|--------------------------------------------------------------------------
+*/
+
+if (!is_array($interests)) {
+    $interests = [];
+}
+
+if ($package < 1) {
+    $package = 1;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| DATA KURSUS TERPILIH
+|--------------------------------------------------------------------------
+*/
+
+$courseData = $courses[$course] ?? [
+    'name' => 'Kursus tidak dipilih',
+    'price' => 0
+];
+
+$courseName = $courseData['name'];
+
+$coursePrice = $courseData['price'];
+
+
+/*
+|--------------------------------------------------------------------------
+| HITUNG BIAYA
+|--------------------------------------------------------------------------
+*/
+
+$subtotal = $coursePrice * $package;
+
+$discountPercent = $discounts[$participantType] ?? 0;
+
+$discountAmount = intdiv(
+    $subtotal * $discountPercent,
+    100
+);
+
+$totalPrice = $subtotal - $discountAmount;
+
+
+/*
+|--------------------------------------------------------------------------
+| MINAT BELAJAR
+|--------------------------------------------------------------------------
+*/
+
+$interestText = [];
+
+foreach ($interests as $interest) {
+
+    if (isset($interestLabels[$interest])) {
+
+        $interestText[] = $interestLabels[$interest];
+
+    }
+}
+
+if (empty($interestText)) {
+
+    $interestText[] = 'Tidak ada';
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| TAMPILAN
+|--------------------------------------------------------------------------
+*/
+
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran Diterima - KursusKu</title>
 
-   <style>
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        color: #16332c;
-        background: #f5f7f6;
-    }
+    <title>
+        Hasil Pendaftaran - <?= e($siteName) ?>
+    </title>
 
-    .container {
-        width: min(1100px, calc(100% - 40px));
-        margin: 0 auto;
-    }
+    <link
+        rel="stylesheet"
+        href="/kursusku-prototype/assets/css/style.css?v=5"
+    >
 
-    nav {
-        display: flex;
-        align-items: center;
-        gap: 24px;
-        padding: 20px 0;
-        flex-wrap: wrap;
-    }
-
-    nav a {
-        color: #0a20cc;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    nav a:hover {
-        text-decoration: underline;
-    }
-
-    .page-header {
-        padding: 25px 0;
-    }
-
-    .page-header h1 {
-        margin: 0 0 8px;
-        font-size: 32px;
-    }
-
-    .page-header p {
-        margin: 0;
-        color: #66736f;
-    }
-
-    .summary-card {
-        background: white;
-        border: 1px solid #dfe5e2;
-        border-radius: 12px;
-        padding: 30px;
-        margin: 20px 0 40px;
-    }
-
-    .alert-success {
-        background: #e7f8ef;
-        border: 1px solid #b9e5cc;
-        color: #145c35;
-        padding: 14px 16px;
-        border-radius: 8px;
-        margin-bottom: 25px;
-    }
-
-    .summary-list {
-        display: grid;
-        grid-template-columns: 180px 1fr;
-        gap: 14px 20px;
-        margin: 0;
-    }
-
-    .summary-list dt {
-        font-weight: bold;
-    }
-
-    .summary-list dd {
-        margin: 0;
-        overflow-wrap: anywhere;
-    }
-
-    .button {
-        display: inline-block;
-        background: #0a20cc;
-        color: white;
-        padding: 11px 18px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .button:hover {
-        background: #07168f;
-    }
-
-    @media (max-width: 640px) {
-        .container {
-            width: min(100% - 24px, 1100px);
-        }
-
-        .summary-list {
-            grid-template-columns: 1fr;
-            gap: 4px;
-        }
-
-        .summary-list dd {
-            margin-bottom: 12px;
-        }
-    }
-</style>
 </head>
+
 
 <body>
 
-    <main class="container">
 
-        <nav aria-label="Navigasi utama">
-            <a href="index.php"><strong>KursusKu</strong></a>
-            <a href="index.php#katalog">Katalog</a>
-            <a href="registration.php">Daftar Kursus</a>
-        </nav>
+<!-- HEADER -->
 
-        <section class="page-header">
-            <h1>Pendaftaran Diterima untuk Diproses</h1>
-            <p>Periksa kembali data latihan berikut.</p>
-        </section>
+<header class="header">
 
-        <section class="summary-card">
+    <div class="container">
 
-            <div class="alert-success">
-                Data pendaftaran berhasil diterima melalui POST.
-            </div>
+        <h1>
+            <?= e($siteName) ?>
+        </h1>
 
-            <dl class="summary-list">
+    </div>
 
-                <dt>Nama</dt>
-                <dd><?= e($name) ?></dd>
+</header>
 
-                <dt>Email</dt>
-                <dd><?= e($email) ?></dd>
 
-                <dt>Nomor HP</dt>
-                <dd><?= e($phone) ?></dd>
+<!-- NAVBAR -->
 
-                <dt>Program Studi</dt>
-                <dd><?= e($studyProgram) ?></dd>
+<nav class="navbar">
 
-                <dt>Kursus</dt>
-                <dd><?= e($course) ?></dd>
+    <div class="container">
 
-                <dt>Jenis Peserta</dt>
-                <dd><?= e($participantType) ?></dd>
+        <a href="index.php">
+            Beranda
+        </a>
 
-                <dt>Minat</dt>
-                <dd><?= e($interestText) ?></dd>
+        <a href="index.php#kursus">
+            Katalog
+        </a>
 
-                <dt>Catatan</dt>
-                <dd><?= e($note) ?></dd>
+        <a href="registration.php">
+            Daftar Kursus
+        </a>
 
-                <dt>Sumber</dt>
-                <dd><?= e($source) ?></dd>
+        <a href="index.php#keunggulan">
+            Keunggulan
+        </a>
 
-            </dl>
+        <a href="index.php#kontak">
+            Kontak
+        </a>
+
+    </div>
+
+</nav>
+
+
+<main>
+
+
+    <!-- JUDUL -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <h2>
+                Pendaftaran Berhasil
+            </h2>
 
             <p>
-                <a class="button" href="registration.php">
-                    Kembali ke Form
-                </a>
+                Terima kasih, data pendaftaran kamu
+                sudah berhasil diterima.
             </p>
 
-        </section>
+        </div>
 
-    
+    </section>
 
-    </main>
+
+    <!-- RINGKASAN PESERTA -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="form-card">
+
+                <h2>
+                    Ringkasan Pendaftaran
+                </h2>
+
+
+                <p>
+                    <strong>Nama:</strong>
+                    <?= e($name) ?>
+                </p>
+
+
+                <p>
+                    <strong>Email:</strong>
+                    <?= e($email) ?>
+                </p>
+
+
+                <p>
+                    <strong>Nomor HP:</strong>
+                    <?= e($phone) ?>
+                </p>
+
+
+                <p>
+                    <strong>Program Studi:</strong>
+                    <?= e($studyProgram) ?>
+                </p>
+
+
+                <p>
+                    <strong>Kursus:</strong>
+                    <?= e($courseName) ?>
+                </p>
+
+
+                <p>
+                    <strong>Tipe Peserta:</strong>
+                    <?= e(ucfirst($participantType)) ?>
+                </p>
+
+
+                <p>
+                    <strong>Minat Belajar:</strong>
+                    <?= e(implode(', ', $interestText)) ?>
+                </p>
+
+
+                <p>
+                    <strong>Metode Belajar:</strong>
+                    <?= e(ucfirst($learningMethod)) ?>
+                </p>
+
+
+                <p>
+                    <strong>Jumlah Paket:</strong>
+                    <?= e($package) ?> paket
+                </p>
+
+
+                <?php if ($note !== ''): ?>
+
+                    <p>
+                        <strong>Catatan:</strong>
+                        <?= e($note) ?>
+                    </p>
+
+                <?php endif; ?>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RINCIAN BIAYA -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <div class="form-card">
+
+                <h2>
+                    Rincian Biaya
+                </h2>
+
+
+                <table>
+
+                    <tr>
+
+                        <td>
+                            Biaya satuan
+                        </td>
+
+                        <td>
+                            <?= rupiah($coursePrice) ?>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Subtotal
+                            (<?= e($package) ?> paket)
+                        </td>
+
+                        <td>
+                            <?= rupiah($subtotal) ?>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Diskon <?= e($discountPercent) ?>%
+                        </td>
+
+                        <td>
+                            -<?= rupiah($discountAmount) ?>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                TOTAL AKHIR
+                            </strong>
+                        </td>
+
+                        <td>
+                            <strong>
+                                <?= rupiah($totalPrice) ?>
+                            </strong>
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FASILITAS -->
+
+    <section class="section section-light">
+
+        <div class="container">
+
+            <h2>
+                Fasilitas
+            </h2>
+
+            <ul>
+
+                <li>
+                    Modul digital
+                </li>
+
+                <li>
+                    Sertifikat penyelesaian
+                </li>
+
+                <li>
+                    Forum diskusi kelas
+                </li>
+
+            </ul>
+
+        </div>
+
+    </section>
+
+
+    <!-- TOMBOL KEMBALI -->
+
+    <section class="section">
+
+        <div class="container">
+
+            <a
+                href="registration.php"
+                class="btn-primary"
+            >
+                Kembali ke Pendaftaran
+            </a>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <p>
+            &copy; <?= date('Y') ?> <?= e($siteName) ?>
+        </p>
+
+    </div>
+
+</footer>
+
 
 </body>
+
 </html>

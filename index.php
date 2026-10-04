@@ -55,6 +55,8 @@ $tahun = date("Y");
     <a href="index.php">Beranda</a>
     <a href="index.php#kursus">Katalog</a>
     <a href="registration.php">Daftar Kursus</a>
+    <a href="index.php#keunggulan">Keunggulan</a>
+    <a href="index.php#kontak">Kontak</a>
   </div>
 </nav>
 
@@ -94,7 +96,7 @@ $tahun = date("Y");
           <div>
 
             <img
-              src="assets/img/image1.png"
+              src="assets/images/hero-kursus.jpg"
               alt="Mahasiswa sedang belajar pemrograman web"
               class="hero-image">
 

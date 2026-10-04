@@ -1,0 +1,14 @@
+TEST MATRIX WEEK 06 - KURSUSKU
+
+No | Skenario Pengujian                         | Input                                      | Hasil yang Diharapkan                         | Status
+---|--------------------------------------------|--------------------------------------------|-----------------------------------------------|--------
+1  | Mahasiswa + Web Dasar                      | Mahasiswa, Web Dasar, UI/UX + Database     | Diskon 20%, Total Rp160.000                   | PASS
+2  | Guru + PHP Dasar                           | Guru, PHP Dasar, Backend                    | Diskon 15%, Total Rp212.500                   | PASS
+3  | Umum + PHP Lanjutan                        | Umum, PHP Lanjutan, Backend                 | Diskon 10%, Total Rp270.000                   | PASS
+4  | Mahasiswa + PHP Lanjutan                   | Mahasiswa, PHP Lanjutan, Backend            | Diskon 20%, Total Rp240.000                   | PASS
+5  | Guru + PHP Lanjutan                        | Guru, PHP Lanjutan, Backend                 | Diskon 15%, Total Rp255.000                   | PASS
+6  | Checkbox minat lebih dari satu              | UI/UX + Database                            | Semua minat yang dipilih tampil               | PASS
+7  | Checkbox minat kosong                       | Tidak memilih minat                         | Pendaftaran tetap berhasil                    | PASS
+8  | Semua pilihan kursus                        | 6 pilihan kursus                            | Semua kursus tampil pada dropdown             | PASS
+9  | History Dummy                               | Klik History Dummy                          | Halaman riwayat dummy tampil                  | PASS
+10 | Loop Lab                                    | Klik Loop Lab                               | Daftar kursus hasil perulangan tampil         | PASS
