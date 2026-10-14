@@ -670,4 +670,4 @@ fieldset.field { border: 1.5px solid var(--slate-200); border-radius: var(--radi
     .cta-banner .btn-primary { width: 100%; }
     .media-preview-container { height: 220px; }
     .utility-page { padding: 24px 12px; }
-    .utility-card {
+    .utility-card { padding: 28px 22px;
