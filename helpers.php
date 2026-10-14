@@ -1,22 +1,21 @@
 <?php
+// helpers.php
 
-function rupiah(int $amount): string
-{
-    return 'Rp ' . number_format($amount, 0, ',', '.');
+function rupiah($angka) {
+    return "Rp " . number_format($angka, 0, ',', '.');
 }
 
-function statusKursus(int $quota, int $registered): string
-{
-    return $registered >= $quota ? 'Penuh' : 'Tersedia';
+function formatTanggal($tanggal) {
+    return date('d M Y', strtotime($tanggal));
 }
 
-function sisaKursi(int $quota, int $registered): int
-{
-    return max(0, $quota - $registered);
+function sisaKursi($quota, $registered) {
+    return $quota - $registered;
 }
 
-function formatTanggal(string $date): string
-{
-    $value = new DateTimeImmutable($date);
-    return $value->format('d-m-Y');
+function statusKursus($quota, $registered) {
+    if ($registered >= $quota) return 'Penuh';
+    if ($registered >= ($quota * 0.8)) return 'Hampir Penuh';
+    return 'Tersedia';
 }
+?>
