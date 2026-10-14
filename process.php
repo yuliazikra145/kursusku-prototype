@@ -1,8 +1,13 @@
 <?php
-// File proses umum (mungkin untuk login atau register)
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    echo "Data diterima: " . htmlspecialchars($_POST['data'] ?? 'Kosong');
+require_once 'helpers.php';
+
+// File ini contoh untuk memproses form sederhana
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nama = sanitize($_POST['nama'] ?? 'Anonim');
+    echo "<h1>Halo, $nama!</h1>";
+    echo "<p>Data Anda telah diproses.</p>";
+    echo '<a href="index.php">Kembali</a>';
 } else {
-    echo "Akses langsung tidak diizinkan.";
+    redirect('index.php');
 }
 ?>

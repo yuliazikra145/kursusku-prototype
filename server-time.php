@@ -1,25 +1,22 @@
 <?php
-
-declare(strict_types=1);
-
 date_default_timezone_set('Asia/Jakarta');
-$serverTime = date('Y-m-d SsH:i:s');
+$sekarang = date('l, d F Y H:i:s');
 ?>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Waktu Server - KursusKu</title>
+    <meta charset="UTF-8">
+    <title>Waktu Server</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="utility-page">
-<main class="utility-card">
-    <span class="eyebrow">PERTEMUAN 2</span>
-    <h1>PHP Diproses oleh Server</h1>
-    <p class="server-time">Waktu server: <strong><?= htmlspecialchars($serverTime) ?></strong></p>
-    <p>Refresh halaman beberapa detik kemudian. Nilai berubah karena fungsi <code>date()</code> dijalankan ulang oleh PHP pada setiap request.</p>
-    <a class="button" href="index.php">Kembali ke Beranda</a>
+<body>
+<main class="utility-page">
+    <div class="utility-card">
+        <h1>Waktu Server</h1>
+        <p class="server-time"><?= $sekarang ?></p>
+        <p>Zona waktu: <strong>Asia/Jakarta</strong></p>
+        <a href="index.php" class="btn-primary">Kembali</a>
+    </div>
 </main>
 </body>
 </html>
