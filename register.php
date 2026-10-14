@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 require __DIR__ . '/data.php';
@@ -19,30 +18,39 @@ require __DIR__ . '/helpers.php';
     <h1>Daftar Kursus</h1>
     <p>Alur: landing page → form → proses PHP → ringkasan. Belum memakai database.</p>
 
-    <form method="POST" action="process.php" class="stack-form">
+    <form method="POST" action="process-registration.php" class="stack-form">
+
+        <!-- ===== Soal No. 29: Input hidden source ===== -->
+        <input type="hidden" name="source" value="milestone-05">
+
+        <!-- Nama & Email -->
         <div class="form-grid">
             <div class="field">
                 <label for="name">Nama lengkap</label>
-                <input id="name" name="name" type="text" required minlength="3" maxlength="80">
+                <input id="name" name="name" type="text" required minlength="3" maxlength="80"
+                       placeholder="Contoh: Budi Santoso">
             </div>
             <div class="field">
                 <label for="email">Email</label>
-                <input id="email" name="email" type="email" required maxlength="120">
+                <input id="email" name="email" type="email" required maxlength="120"
+                       placeholder="nama@email.com">
             </div>
         </div>
 
+        <!-- Pilih Kursus -->
         <div class="field">
             <label for="course_code">Pilih kursus</label>
             <select id="course_code" name="course_code" required>
                 <option value="">-- Pilih kursus --</option>
                 <?php foreach ($courses as $course): ?>
                     <option value="<?= e($course['code']) ?>">
-                        <?= e($course['name']) ?> - <?= formatRupiah($course['fee']) ?>
+                        <?= e($course['name']) ?> - <?= rupiah($course['fee']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
         </div>
 
+        <!-- Tipe Peserta -->
         <fieldset class="field">
             <legend>Tipe peserta</legend>
             <div class="choice-row">
@@ -52,6 +60,7 @@ require __DIR__ . '/helpers.php';
             </div>
         </fieldset>
 
+        <!-- Minat Belajar -->
         <fieldset class="field">
             <legend>Minat belajar</legend>
             <div class="choice-row">
@@ -64,6 +73,7 @@ require __DIR__ . '/helpers.php';
             </div>
         </fieldset>
 
+        <!-- Metode Belajar & Jumlah Paket -->
         <div class="form-grid">
             <div class="field">
                 <label for="learning_mode">Metode belajar</label>
@@ -85,18 +95,21 @@ require __DIR__ . '/helpers.php';
             </div>
         </div>
 
+        <!-- Catatan -->
         <div class="field">
             <label for="notes">Catatan tambahan</label>
             <textarea id="notes" name="notes" rows="4" maxlength="300"></textarea>
         </div>
 
+        <!-- Tombol -->
         <div class="button-row">
             <button class="button" type="submit">Proses Pendaftaran</button>
-            <a class="button button-secondary" href="history.php">History Dummy</a>
+            <a class="button button-secondary" href="history-dummy.php">History Dummy</a>
             <a class="button button-secondary" href="loop-lab.php">Loop Lab</a>
         </div>
     </form>
 
+    <!-- Fasilitas -->
     <section class="formula-box">
         <strong>Fasilitas</strong>
         <ul>
