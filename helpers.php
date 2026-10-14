@@ -1,47 +1,65 @@
 <?php
-// helpers.php — Kumpulan fungsi bantuan
+// helpers.php
+// File ini hanya berisi kumpulan FUNGSI.
+// JANGAN require helpers.php di dalam file ini sendiri.
 
-/**
- * Sanitasi input dari user
- */
-function sanitize($data) {
-    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+function rupiah(int $amount): string
+{
+    return 'Rp ' . number_format($amount, 0, ',', '.');
 }
 
-/**
- * Format angka ke Rupiah
- */
-function formatRupiah($angka) {
-    return "Rp " . number_format($angka, 0, ',', '.');
+function statusKursus(int $quota, int $registered): string
+{
+    return $registered >= $quota ? 'Penuh' : 'Tersedia';
 }
 
-/**
- * Redirect ke halaman lain
- */
-function redirect($url) {
-    header("Location: $url");
-    exit;
+function sisaKursi(int $quota, int $registered): int
+{
+    return max(0, $quota - $registered);
 }
 
-/**
- * Cek status kursus (Tersedia / Penuh)
- */
-function statusKursus($quota, $registered) {
-    return ($registered >= $quota) ? 'Penuh' : 'Tersedia';
+function formatTanggal(string $date): string
+{
+    return (new DateTimeImmutable($date))->format('d-m-Y');
 }
 
-/**
- * Hitung sisa kursi
- */
-function sisaKursi($quota, $registered) {
-    $sisa = $quota - $registered;
-    return ($sisa < 0) ? 0 : $sisa;
+function e($value): string
+{
+    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
 }
 
-/**
- * Cek apakah user sudah login (simulasi)
- */
-function isLoggedIn() {
-    return isset($_SESSION['user']);
+function getDiscountPercent(string $participantType): int
+{
+    return match($participantType) {
+        'mahasiswa' => 20,
+        'guru'      => 15,
+        default     => 0,
+    };
 }
-?>
+
+function getLearningModeLabel(string $mode): string
+{
+    return match($mode) {
+        'offline' => 'Tatap Muka',
+        'online'  => 'Online',
+        'hybrid'  => 'Hybrid',
+        default   => 'Tidak diketahui',
+    };
+}
+
+function hitungTotalBiaya(int $fee, int $peserta, int $diskonPersen, int $admin): int
+{
+    $subtotal = $fee * $peserta;
+    $diskon = (int) ($subtotal * $diskonPersen / 100);
+    return $subtotal - $diskon + $admin;
+}
+
+function findCourse(string $code, array $courses): ?array
+{
+    foreach ($courses as $course) {
+        if ($course['code'] === $code) {
+            return $course;
+        }
+    }
+    return null;
+}
