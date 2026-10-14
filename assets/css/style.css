@@ -7,11 +7,11 @@
    1. VARIABEL
    ========================================================= */
 :root {
-    --teal-900: #134e4a;
-    --teal-800: #115e59;
-    --teal-700: #0f766e;
-    --teal-600: #0d9488;
-    --teal-500: #14b8a6;
+    --teal-900: #184fd8;
+    --teal-800: #4e24e7;
+    --teal-700: #1f5ddb;
+    --teal-600: #384ac0;
+    --teal-500: #5c8fcc;
     --teal-100: #ccfbf1;
     --teal-50:  #f0fdfa;
 
@@ -28,8 +28,8 @@
 
     --red-700: #b91c1c;
     --red-50:  #fef2f2;
-    --green-700: #15803d;
-    --green-50:  #f0fdf4;
+    --green-700: #1c1580;
+    --green-50:  #cbc8e9;
 
     --shadow-xs: 0 1px 3px rgba(15,23,42,.06);
     --shadow-sm: 0 4px 12px rgba(15,23,42,.05);
